@@ -1,65 +1,156 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CSharpCapstone
 {
-	class Program
+	class Sorter
 	{
-		//sorts an array using Bubble Sort algorithm
-		public static int[] bubbleSort(int[] arr)
+		/**Method Overloading used for BubbleSort() so that we can call this method regardless of data type (between int, double, and string).**/
+
+		public static void BubbleSort(List<int> list)
 		{
 			int moves = 0;
 			do
 			{
 				moves = 0;
-				int n = arr.Length;
+				int n = list.Count;
 				for (int i = 0; i < n - 1; i++)
 				{
 					int j = i + 1;
-					if (arr[i] > arr[j])
+					if (list[i] > list[j]) //returns 1 if list[i] is greater than list[j]
 					{
-						int temp = arr[i];
-						arr[i] = arr[j];
-						arr[j] = temp;
+						int temp = list[i];
+						list[i] = list[j];
+						list[j] = temp;
 						moves++;
 					}
 				}
 			} while (moves != 0);//if there were no moves made this pass, then this array is sorted now
-			return arr;
 		}
 
-		// prints an array
-		public static void printArray(int[] arr)
+		public static void BubbleSort(List<double> list)
 		{
-			int n = arr.Length;
+			int moves = 0;
+			do
+			{
+				moves = 0;
+				int n = list.Count;
+				for (int i = 0; i < n - 1; i++)
+				{
+					int j = i + 1;
+					if (list[i] > list[j]) //returns 1 if list[i] is greater than list[j]
+					{
+						double temp = list[i];
+						list[i] = list[j];
+						list[j] = temp;
+						moves++;
+					}
+				}
+			} while (moves != 0);//if there were no moves made this pass, then this array is sorted now
+		}
+
+		public static void BubbleSort(List<string> list)
+		{
+			int moves = 0;
+			do
+			{
+				moves = 0;
+				int n = list.Count;
+				for (int i = 0; i < n - 1; i++)
+				{
+					int j = i + 1;
+					if (list[i].CompareTo(list[j]) > 0) //returns 1 if list[i] is greater than list[j]
+					{
+						string temp = list[i];
+						list[i] = list[j];
+						list[j] = temp;
+						moves++;
+					}
+				}
+			} while (moves != 0);//if there were no moves made this pass, then this array is sorted now
+		}
+
+		/**Method Overloading used for PrintList() so that we can call this method regardless of data type (between int, double, and string).**/
+		public static void PrintList(List<int> list)
+		{
+			int n = list.Count;
 			Console.Write("{ ");
 			for (int count = 0; count < n - 1; count++)
 			{
-				Console.Write(arr[count] + ", ");
+				Console.Write(list[count] + ", ");
 			}
-			Console.Write(arr[n - 1] + " }");
+			Console.Write(list[n - 1] + " }");
+		}
+		
+		public static void PrintList(List<double> list)
+		{
+			int n = list.Count;
+			Console.Write("{ ");
+			for (int count = 0; count < n - 1; count++)
+			{
+				Console.Write(list[count] + ", ");
+			}
+			Console.Write(list[n - 1] + " }");
+		}
+
+		public static void PrintList(List<string> list)
+		{
+			int n = list.Count;
+			Console.Write("{ ");
+			for (int count = 0; count < n - 1; count++)
+			{
+				Console.Write(list[count] + ", ");
+			}
+			Console.Write(list[n - 1] + " }");
 		}
 
 		// driver method
 		public static void Main(string[] args)
 		{
-			Console.WriteLine("Please enter amount of integers to sort:");
-			string userInput = Console.ReadLine();
-			int n = Convert.ToInt32(userInput);
-			int[] userArr = new int[n];
-
-			Console.WriteLine("Please enter one integer value at a time.");
-			for (int count = 0; count < n; count++)
+			Console.WriteLine("Specify what data type you would like to sort.\nEnter '1' for integer.\nEnter '2' for double.\nEnter '3' for string.");
+			int userInput = Convert.ToInt32(Console.ReadLine());
+			switch (userInput)
 			{
-				Console.WriteLine("Integer {0}:", count);
-				userInput = Console.ReadLine();
-				userArr[count] = Convert.ToInt32(userInput);
+				case 1:
+					Console.WriteLine("Enter list of integers separated by commas (ex. 1,2,3):");
+					string userInts = Console.ReadLine();
+					List<string> intInput = userInts.Split(',').ToList<string>();
+					List<int> intSorter = new List<int>();
+					foreach (string item in intInput)
+					{
+						intSorter.Add(Convert.ToInt32(item));
+					}
+
+					BubbleSort(intSorter);
+					PrintList(intSorter);
+					break;
+				case 2:
+					Console.WriteLine("Enter list of doubles separated by commas (ex. 1.0,2.0,3.0):");
+					string userDoubles = Console.ReadLine();
+					List<string> doubInput = userDoubles.Split(',').ToList<string>();
+					List<double> doubSorter = new List<double>();
+					foreach (string item in doubInput)
+					{
+						doubSorter.Add(Convert.ToDouble(item));
+					}
+
+					BubbleSort(doubSorter);
+					PrintList(doubSorter);
+					break;
+				case 3:
+					Console.WriteLine("Enter list of strings separated by commas (ex. One,Two,Three):");
+					string userStrings = Console.ReadLine();
+					List<string> stringSorter = userStrings.Split(',').ToList<string>();
+
+					BubbleSort(stringSorter);
+					PrintList(stringSorter);
+					break;
+				default:
+					Console.WriteLine($"An unexpected value ({userInput}), please try again.");
+					break;
+
 			}
-			Console.Write("Unsorted Array: ");
-			printArray(userArr);
-			Console.WriteLine();
-			userArr = bubbleSort(userArr);
-			Console.Write("Sorted Array: ");
-			printArray(userArr);
 		}
 	}
 }
